@@ -65,14 +65,21 @@ def change_client4(conn, client_id, first_name=None, last_name=None, email=None,
           SELECT * FROM clients;
                  """)
     print(cur.fetchall())
-# def delete_phone(conn, client_id, phone):
-#     cur.execute("""
-#          DELETE FROM clients WHERE id=%s;
-#             """, (phone, client_id))
-#     cur.execute("""
-#          SELECT * FROM clients;
-#             """)
-#     print(cur.fetchall())
+def delete_phone(conn, client_id, phones):
+    # cur.execute("""
+    #      DELETE FROM clients WHERE phones=%s and id=%s;
+    #         """, (phone, client_id))
+    # cur.execute("""
+    #      SELECT * FROM clients;
+    #         """)
+    # print(cur.fetchall())
+    cur.execute("""
+              UPDATE clients SET phones=%s WHERE id=%s;
+              """, (phones, client_id))
+    cur.execute("""
+              SELECT * FROM clients;
+                     """)
+    print(cur.fetchall())
 
 def delete_client(conn, client_id):
     cur.execute("""
@@ -125,6 +132,7 @@ with psycopg2.connect(database="clients_db", user="postgres", password=" ") as c
                 client_id = int(input("Введите номер id клиента: "))
                 for i in range(int(input("Введите количество телефонных номеров для данного клиента: "))):
                     phone.append(input("Введите номер телефона: "))
+                    # phone = input("Введите номер телефона: ")
                 add_phone(conn, client_id=client_id, phone=phone)
                 print("Телефонные номера клиента успешно добавлены")
         elif add_phone_question == "НЕТ":
@@ -169,15 +177,16 @@ with psycopg2.connect(database="clients_db", user="postgres", password=" ") as c
                 print("Телефонные номера клиентов успешно обновлены")
             elif change_client_question4 == "НЕТ":
                 print("Хорошо, номера телефонов клиентов менять не будем")
-            # delete_phone_question = input("Вы хотите удалить номера телефонов клиента? Введите: ДА/НЕТ ").upper()
-            # if delete_phone_question == "ДА":
-            #     for j in range(int(input("Введите количество клиентов, у которых Вы хотите удалить номера телефонов: "))):
-            #         client_id = int(input("Введите номер id клиента: "))
-            #         phone = input("Введите номер телефона клиента, который Вы хотите удалить: ")
-            #         delete_phone(conn, client_id, phone=phone)
-            #         print("Изменения в номера телефонов клиентов внесены")
-            # elif delete_phone_question == "НЕТ":
-            #     print("Хорошо, номера телефонов клиентов удалять не будем")
+            delete_phone_question = input("Вы хотите удалить номера телефонов клиента? Введите: ДА/НЕТ ").upper()
+            if delete_phone_question == "ДА":
+                for j in range(int(input("Введите количество клиентов, у которых Вы хотите удалить номера телефонов: "))):
+                    client_id = int(input("Введите номер id клиента: "))
+                    phones = 'None'
+                    # phone = input("Введите номер телефона клиента, который Вы хотите удалить: ")
+                    delete_phone(conn, client_id, phones=phones)
+                    print("Изменения в номера телефонов клиентов внесены")
+            elif delete_phone_question == "НЕТ":
+                print("Хорошо, номера телефонов клиентов удалять не будем")
             delete_client_question = input("Вы хотите удалить клиента из базы? Введите: ДА/НЕТ ").upper()
             if delete_client_question == "ДА":
                 for j in range(int(input("Введите количество клиентов, которых Вы хотите удалить из базы: "))):
