@@ -66,13 +66,6 @@ def change_client4(conn, client_id, first_name=None, last_name=None, email=None,
                  """)
     print(cur.fetchall())
 def delete_phone(conn, client_id, phones):
-    # cur.execute("""
-    #      DELETE FROM clients WHERE phones=%s and id=%s;
-    #         """, (phone, client_id))
-    # cur.execute("""
-    #      SELECT * FROM clients;
-    #         """)
-    # print(cur.fetchall())
     cur.execute("""
               UPDATE clients SET phones=%s WHERE id=%s;
               """, (phones, client_id))
@@ -132,7 +125,6 @@ with psycopg2.connect(database="clients_db", user="postgres", password=" ") as c
                 client_id = int(input("Введите номер id клиента: "))
                 for i in range(int(input("Введите количество телефонных номеров для данного клиента: "))):
                     phone.append(input("Введите номер телефона: "))
-                    # phone = input("Введите номер телефона: ")
                 add_phone(conn, client_id=client_id, phone=phone)
                 print("Телефонные номера клиента успешно добавлены")
         elif add_phone_question == "НЕТ":
@@ -181,8 +173,7 @@ with psycopg2.connect(database="clients_db", user="postgres", password=" ") as c
             if delete_phone_question == "ДА":
                 for j in range(int(input("Введите количество клиентов, у которых Вы хотите удалить номера телефонов: "))):
                     client_id = int(input("Введите номер id клиента: "))
-                    phones = 'None'
-                    # phone = input("Введите номер телефона клиента, который Вы хотите удалить: ")
+                    phones = 'Null'
                     delete_phone(conn, client_id, phones=phones)
                     print("Изменения в номера телефонов клиентов внесены")
             elif delete_phone_question == "НЕТ":
