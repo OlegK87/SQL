@@ -173,7 +173,7 @@ def find_client(first_name, last_name, email, phone_number=None):
 
 if __name__ == "__main__":
 
-    with psycopg2.connect(database="clients_db", user="postgres", password="Motocikl") as conn:
+    with psycopg2.connect(database="clients_db", user="postgres", password=" ") as conn:
         with conn.cursor() as cur:
             cur.execute("""
                     DROP TABLE clients CASCADE;
